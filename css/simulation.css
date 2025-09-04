@@ -1,0 +1,799 @@
+/* Simulation Specific Styles */
+.simulation-main {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+/* Simulation Header */
+.simulation-header {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 2rem;
+}
+
+.simulation-header .header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 2rem;
+}
+
+.simulation-info h1 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 0.5rem;
+}
+
+.simulation-info p {
+    font-size: 1rem;
+    color: #666;
+    line-height: 1.5;
+}
+
+.simulation-controls {
+    display: flex;
+    gap: 1rem;
+}
+
+.control-btn {
+    padding: 0.75rem 1.5rem;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    background: white;
+    color: #333;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.control-btn:hover {
+    background: #f8fafc;
+    border-color: #667eea;
+}
+
+.control-btn.primary {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    border-color: transparent;
+}
+
+.control-btn.primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+/* Scenario Section */
+.scenario-container {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    overflow: hidden;
+}
+
+.scenario-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 2rem;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    background: #f8fafc;
+}
+
+.scenario-header h2 {
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: #333;
+}
+
+.scenario-tabs {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.tab-btn {
+    padding: 0.5rem 1rem;
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    background: white;
+    color: #666;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.tab-btn:hover,
+.tab-btn.active {
+    background: #667eea;
+    color: white;
+    border-color: #667eea;
+}
+
+.tab-content {
+    padding: 2rem;
+}
+
+/* Parameters Tab */
+.parameters-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 2rem;
+}
+
+.parameter-group {
+    background: #f8fafc;
+    border-radius: 12px;
+    padding: 1.5rem;
+    border-left: 4px solid #667eea;
+}
+
+.parameter-group h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 1.5rem;
+}
+
+.parameter-item {
+    margin-bottom: 1.5rem;
+}
+
+.parameter-item:last-child {
+    margin-bottom: 0;
+}
+
+.parameter-item label {
+    display: block;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #333;
+    margin-bottom: 0.75rem;
+}
+
+.parameter-control {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.parameter-slider {
+    flex: 1;
+    height: 6px;
+    border-radius: 3px;
+    background: #e5e7eb;
+    outline: none;
+    -webkit-appearance: none;
+}
+
+.parameter-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #667eea;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.parameter-slider::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #667eea;
+    cursor: pointer;
+    border: none;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.parameter-value {
+    font-weight: 600;
+    color: #333;
+    min-width: 40px;
+    text-align: right;
+}
+
+.parameter-unit {
+    font-size: 0.8rem;
+    color: #666;
+    min-width: 30px;
+}
+
+.parameter-impact {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.8rem;
+}
+
+.impact-label {
+    color: #666;
+}
+
+.impact-value {
+    font-weight: 600;
+    color: #10b981;
+}
+
+/* Equipment Tab */
+.equipment-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+.equipment-card {
+    background: #f8fafc;
+    border-radius: 12px;
+    padding: 1.5rem;
+    border: 1px solid #e5e7eb;
+    transition: all 0.3s ease;
+}
+
+.equipment-card:hover {
+    border-color: #667eea;
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.1);
+}
+
+.equipment-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.equipment-name {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #333;
+}
+
+.equipment-status {
+    padding: 0.25rem 0.75rem;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.equipment-status.available {
+    background: rgba(16, 185, 129, 0.1);
+    color: #10b981;
+}
+
+.equipment-options {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.option-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    color: #333;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 6px;
+    transition: background 0.3s ease;
+}
+
+.option-label:hover {
+    background: rgba(102, 126, 234, 0.05);
+}
+
+.option-label input[type="radio"] {
+    margin: 0;
+}
+
+/* Recipe Tab */
+.recipe-options {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+.recipe-card {
+    background: #f8fafc;
+    border-radius: 12px;
+    padding: 1.5rem;
+    border: 2px solid #e5e7eb;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.recipe-card:hover {
+    border-color: #667eea;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(102, 126, 234, 0.15);
+}
+
+.recipe-card.active {
+    border-color: #667eea;
+    background: rgba(102, 126, 234, 0.05);
+}
+
+.recipe-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.recipe-name {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #333;
+}
+
+.recipe-badge {
+    padding: 0.25rem 0.75rem;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.recipe-badge.current {
+    background: rgba(16, 185, 129, 0.1);
+    color: #10b981;
+}
+
+.recipe-badge.optimized {
+    background: rgba(59, 130, 246, 0.1);
+    color: #3b82f6;
+}
+
+.recipe-badge.experimental {
+    background: rgba(245, 158, 11, 0.1);
+    color: #f59e0b;
+}
+
+.recipe-details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.recipe-metric {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.9rem;
+}
+
+.metric-label {
+    color: #666;
+}
+
+.metric-value {
+    font-weight: 600;
+    color: #333;
+}
+
+.metric-value.low {
+    color: #10b981;
+}
+
+.metric-value.medium {
+    color: #f59e0b;
+}
+
+.metric-value.high {
+    color: #ef4444;
+}
+
+/* Environment Tab */
+.environment-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+}
+
+.env-group {
+    background: #f8fafc;
+    border-radius: 12px;
+    padding: 1.5rem;
+    border-left: 4px solid #10b981;
+}
+
+.env-group h4 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 1rem;
+}
+
+.env-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.env-item:last-child {
+    margin-bottom: 0;
+}
+
+.env-item label {
+    font-size: 0.9rem;
+    color: #666;
+    font-weight: 500;
+}
+
+.env-item input {
+    width: 80px;
+    padding: 0.5rem;
+    border: 1px solid #e5e7eb;
+    border-radius: 4px;
+    text-align: right;
+    font-size: 0.9rem;
+}
+
+/* Results Section */
+.results-container {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 2rem;
+}
+
+.results-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.results-header h2 {
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: #333;
+}
+
+.results-status {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.status-indicator {
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    background: rgba(107, 114, 128, 0.1);
+    color: #6b7280;
+}
+
+.status-indicator.running {
+    background: rgba(245, 158, 11, 0.1);
+    color: #f59e0b;
+}
+
+.status-indicator.complete {
+    background: rgba(16, 185, 129, 0.1);
+    color: #10b981;
+}
+
+.confidence-score {
+    font-size: 0.9rem;
+    color: #666;
+    font-weight: 500;
+}
+
+.results-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.result-card {
+    background: #f8fafc;
+    border-radius: 12px;
+    padding: 1.5rem;
+    border-left: 4px solid #667eea;
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.card-header h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #333;
+}
+
+.prediction-change {
+    font-size: 0.9rem;
+    font-weight: 600;
+    padding: 0.25rem 0.75rem;
+    border-radius: 12px;
+    background: rgba(107, 114, 128, 0.1);
+    color: #6b7280;
+}
+
+.prediction-change.positive {
+    background: rgba(16, 185, 129, 0.1);
+    color: #10b981;
+}
+
+.prediction-change.negative {
+    background: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+}
+
+.prediction-chart {
+    height: 150px;
+    margin-bottom: 1rem;
+}
+
+.prediction-details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.detail-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.9rem;
+}
+
+.detail-label {
+    color: #666;
+}
+
+.detail-value {
+    font-weight: 600;
+    color: #333;
+}
+
+/* Throughput Metrics */
+.throughput-metrics {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.metric-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background: white;
+    border-radius: 8px;
+}
+
+.metric-icon {
+    font-size: 1.5rem;
+}
+
+.metric-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.metric-label {
+    font-size: 0.8rem;
+    color: #666;
+}
+
+.metric-value {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #333;
+}
+
+/* Cost Analysis */
+.cost-breakdown {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.cost-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem;
+    background: white;
+    border-radius: 6px;
+    font-size: 0.9rem;
+}
+
+.cost-item.total {
+    border-top: 2px solid #e5e7eb;
+    font-weight: 600;
+    background: rgba(102, 126, 234, 0.05);
+}
+
+.cost-label {
+    color: #666;
+}
+
+.cost-value {
+    font-weight: 600;
+    color: #333;
+}
+
+/* Risk Assessment */
+.risk-level {
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    background: rgba(16, 185, 129, 0.1);
+    color: #10b981;
+}
+
+.risk-factors {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.risk-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem;
+    background: white;
+    border-radius: 6px;
+    font-size: 0.9rem;
+}
+
+.risk-icon {
+    font-size: 1rem;
+}
+
+.risk-text {
+    color: #333;
+}
+
+/* Recommendations Panel */
+.recommendations-panel {
+    background: #f8fafc;
+    border-radius: 12px;
+    padding: 1.5rem;
+    border-left: 4px solid #10b981;
+}
+
+.recommendations-panel h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 1rem;
+}
+
+.recommendation-placeholder {
+    text-align: center;
+    color: #666;
+    font-style: italic;
+    padding: 2rem;
+}
+
+.recommendation-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.recommendation-item {
+    background: white;
+    border-radius: 8px;
+    padding: 1rem;
+    border-left: 4px solid #10b981;
+}
+
+.recommendation-title {
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 0.5rem;
+}
+
+.recommendation-description {
+    font-size: 0.9rem;
+    color: #666;
+    line-height: 1.5;
+    margin-bottom: 0.75rem;
+}
+
+.recommendation-impact {
+    font-size: 0.8rem;
+    color: #10b981;
+    font-weight: 500;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .simulation-header .header-content {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .simulation-controls {
+        justify-content: stretch;
+    }
+    
+    .control-btn {
+        flex: 1;
+    }
+    
+    .parameters-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .results-grid {
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    }
+}
+
+@media (max-width: 768px) {
+    .simulation-main {
+        padding: 1rem;
+    }
+    
+    .scenario-header {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: stretch;
+    }
+    
+    .scenario-tabs {
+        justify-content: stretch;
+    }
+    
+    .tab-btn {
+        flex: 1;
+        text-align: center;
+    }
+    
+    .equipment-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .recipe-options {
+        grid-template-columns: 1fr;
+    }
+    
+    .environment-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .results-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .parameter-control {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.5rem;
+    }
+    
+    .parameter-value,
+    .parameter-unit {
+        text-align: left;
+    }
+}
+

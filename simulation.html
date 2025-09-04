@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>What-If Simulation | VSMC-DAP</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/simulation.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <h1>VSMC-DAP</h1>
+                <span class="subtitle">What-If Simulation</span>
+            </div>
+            <nav class="nav">
+                <a href="index.html" class="nav-link">Dashboard</a>
+                <a href="ai-chat.html" class="nav-link">AI Assistant</a>
+                <a href="root-cause.html" class="nav-link">Root Cause Analysis</a>
+                <a href="data-lineage.html" class="nav-link">Data Lineage</a>
+                <a href="#" class="nav-link active">What-If Simulation</a>
+            </nav>
+            <div class="user-info">
+                <span class="user-name">Engineer Chen</span>
+                <div class="status-indicator online"></div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="simulation-main">
+        <!-- Simulation Header -->
+        <section class="simulation-header">
+            <div class="header-content">
+                <div class="simulation-info">
+                    <h1>🔮 What-If Simulation Laboratory</h1>
+                    <p>Explore process optimization scenarios with zero risk using our digital twin technology</p>
+                </div>
+                <div class="simulation-controls">
+                    <button class="control-btn" onclick="loadTemplate()">📋 Load Template</button>
+                    <button class="control-btn" onclick="saveScenario()">💾 Save Scenario</button>
+                    <button class="control-btn primary" onclick="runSimulation()">🚀 Run Simulation</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Scenario Builder -->
+        <section class="scenario-section">
+            <div class="scenario-container">
+                <div class="scenario-header">
+                    <h2>⚙️ Scenario Builder</h2>
+                    <div class="scenario-tabs">
+                        <button class="tab-btn active" onclick="showTab('parameters')">Parameters</button>
+                        <button class="tab-btn" onclick="showTab('equipment')">Equipment</button>
+                        <button class="tab-btn" onclick="showTab('recipe')">Recipe</button>
+                        <button class="tab-btn" onclick="showTab('environment')">Environment</button>
+                    </div>
+                </div>
+
+                <!-- Parameters Tab -->
+                <div class="tab-content" id="parametersTab">
+                    <div class="parameters-grid">
+                        <div class="parameter-group">
+                            <h3>🌡️ Temperature Control</h3>
+                            <div class="parameter-item">
+                                <label>CVD-02 Temperature (°C)</label>
+                                <div class="parameter-control">
+                                    <input type="range" class="parameter-slider" min="400" max="500" value="450" 
+                                           oninput="updateParameter('cvd-temp', this.value)">
+                                    <span class="parameter-value" id="cvd-temp-value">450</span>
+                                    <span class="parameter-unit">°C</span>
+                                </div>
+                                <div class="parameter-impact">
+                                    <span class="impact-label">Impact:</span>
+                                    <span class="impact-value" id="cvd-temp-impact">Baseline</span>
+                                </div>
+                            </div>
+                            
+                            <div class="parameter-item">
+                                <label>Stepper Temperature (°C)</label>
+                                <div class="parameter-control">
+                                    <input type="range" class="parameter-slider" min="20" max="30" value="23" 
+                                           oninput="updateParameter('stepper-temp', this.value)">
+                                    <span class="parameter-value" id="stepper-temp-value">23</span>
+                                    <span class="parameter-unit">°C</span>
+                                </div>
+                                <div class="parameter-impact">
+                                    <span class="impact-label">Impact:</span>
+                                    <span class="impact-value" id="stepper-temp-impact">Baseline</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="parameter-group">
+                            <h3>💨 Pressure & Flow</h3>
+                            <div class="parameter-item">
+                                <label>Chamber Pressure (mTorr)</label>
+                                <div class="parameter-control">
+                                    <input type="range" class="parameter-slider" min="0.5" max="2.0" step="0.1" value="1.0" 
+                                           oninput="updateParameter('pressure', this.value)">
+                                    <span class="parameter-value" id="pressure-value">1.0</span>
+                                    <span class="parameter-unit">mTorr</span>
+                                </div>
+                                <div class="parameter-impact">
+                                    <span class="impact-label">Impact:</span>
+                                    <span class="impact-value" id="pressure-impact">Baseline</span>
+                                </div>
+                            </div>
+                            
+                            <div class="parameter-item">
+                                <label>Gas Flow Rate (sccm)</label>
+                                <div class="parameter-control">
+                                    <input type="range" class="parameter-slider" min="50" max="200" value="100" 
+                                           oninput="updateParameter('flow-rate', this.value)">
+                                    <span class="parameter-value" id="flow-rate-value">100</span>
+                                    <span class="parameter-unit">sccm</span>
+                                </div>
+                                <div class="parameter-impact">
+                                    <span class="impact-label">Impact:</span>
+                                    <span class="impact-value" id="flow-rate-impact">Baseline</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="parameter-group">
+                            <h3>⚡ Power & Timing</h3>
+                            <div class="parameter-item">
+                                <label>RF Power (W)</label>
+                                <div class="parameter-control">
+                                    <input type="range" class="parameter-slider" min="800" max="1200" value="1000" 
+                                           oninput="updateParameter('rf-power', this.value)">
+                                    <span class="parameter-value" id="rf-power-value">1000</span>
+                                    <span class="parameter-unit">W</span>
+                                </div>
+                                <div class="parameter-impact">
+                                    <span class="impact-label">Impact:</span>
+                                    <span class="impact-value" id="rf-power-impact">Baseline</span>
+                                </div>
+                            </div>
+                            
+                            <div class="parameter-item">
+                                <label>Process Time (sec)</label>
+                                <div class="parameter-control">
+                                    <input type="range" class="parameter-slider" min="60" max="180" value="120" 
+                                           oninput="updateParameter('process-time', this.value)">
+                                    <span class="parameter-value" id="process-time-value">120</span>
+                                    <span class="parameter-unit">sec</span>
+                                </div>
+                                <div class="parameter-impact">
+                                    <span class="impact-label">Impact:</span>
+                                    <span class="impact-value" id="process-time-impact">Baseline</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Equipment Tab -->
+                <div class="tab-content" id="equipmentTab" style="display: none;">
+                    <div class="equipment-scenarios">
+                        <div class="scenario-option">
+                            <h3>🔧 Equipment Configuration</h3>
+                            <div class="equipment-grid">
+                                <div class="equipment-card">
+                                    <div class="equipment-header">
+                                        <span class="equipment-name">CVD-02</span>
+                                        <span class="equipment-status available">Available</span>
+                                    </div>
+                                    <div class="equipment-options">
+                                        <label class="option-label">
+                                            <input type="radio" name="cvd-02" value="normal" checked>
+                                            Normal Operation
+                                        </label>
+                                        <label class="option-label">
+                                            <input type="radio" name="cvd-02" value="maintenance">
+                                            Maintenance Mode
+                                        </label>
+                                        <label class="option-label">
+                                            <input type="radio" name="cvd-02" value="optimized">
+                                            Optimized Settings
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="equipment-card">
+                                    <div class="equipment-header">
+                                        <span class="equipment-name">Stepper-01</span>
+                                        <span class="equipment-status available">Available</span>
+                                    </div>
+                                    <div class="equipment-options">
+                                        <label class="option-label">
+                                            <input type="radio" name="stepper-01" value="normal" checked>
+                                            Normal Operation
+                                        </label>
+                                        <label class="option-label">
+                                            <input type="radio" name="stepper-01" value="enhanced">
+                                            Enhanced Focus
+                                        </label>
+                                        <label class="option-label">
+                                            <input type="radio" name="stepper-01" value="high-throughput">
+                                            High Throughput
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="equipment-card">
+                                    <div class="equipment-header">
+                                        <span class="equipment-name">Etcher-03</span>
+                                        <span class="equipment-status available">Available</span>
+                                    </div>
+                                    <div class="equipment-options">
+                                        <label class="option-label">
+                                            <input type="radio" name="etcher-03" value="normal" checked>
+                                            Normal Operation
+                                        </label>
+                                        <label class="option-label">
+                                            <input type="radio" name="etcher-03" value="aggressive">
+                                            Aggressive Etch
+                                        </label>
+                                        <label class="option-label">
+                                            <input type="radio" name="etcher-03" value="gentle">
+                                            Gentle Etch
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recipe Tab -->
+                <div class="tab-content" id="recipeTab" style="display: none;">
+                    <div class="recipe-scenarios">
+                        <h3>📋 Recipe Optimization</h3>
+                        <div class="recipe-options">
+                            <div class="recipe-card active" onclick="selectRecipe('current')">
+                                <div class="recipe-header">
+                                    <span class="recipe-name">Current Recipe v2.1</span>
+                                    <span class="recipe-badge current">Current</span>
+                                </div>
+                                <div class="recipe-details">
+                                    <div class="recipe-metric">
+                                        <span class="metric-label">Expected Yield:</span>
+                                        <span class="metric-value">94.2%</span>
+                                    </div>
+                                    <div class="recipe-metric">
+                                        <span class="metric-label">Throughput:</span>
+                                        <span class="metric-value">85 WPH</span>
+                                    </div>
+                                    <div class="recipe-metric">
+                                        <span class="metric-label">Risk Level:</span>
+                                        <span class="metric-value low">Low</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="recipe-card" onclick="selectRecipe('optimized')">
+                                <div class="recipe-header">
+                                    <span class="recipe-name">AI-Optimized Recipe v3.0</span>
+                                    <span class="recipe-badge optimized">Optimized</span>
+                                </div>
+                                <div class="recipe-details">
+                                    <div class="recipe-metric">
+                                        <span class="metric-label">Expected Yield:</span>
+                                        <span class="metric-value">95.8%</span>
+                                    </div>
+                                    <div class="recipe-metric">
+                                        <span class="metric-label">Throughput:</span>
+                                        <span class="metric-value">92 WPH</span>
+                                    </div>
+                                    <div class="recipe-metric">
+                                        <span class="metric-label">Risk Level:</span>
+                                        <span class="metric-value medium">Medium</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="recipe-card" onclick="selectRecipe('experimental')">
+                                <div class="recipe-header">
+                                    <span class="recipe-name">Experimental Recipe v4.0</span>
+                                    <span class="recipe-badge experimental">Experimental</span>
+                                </div>
+                                <div class="recipe-details">
+                                    <div class="recipe-metric">
+                                        <span class="metric-label">Expected Yield:</span>
+                                        <span class="metric-value">96.5%</span>
+                                    </div>
+                                    <div class="recipe-metric">
+                                        <span class="metric-label">Throughput:</span>
+                                        <span class="metric-value">98 WPH</span>
+                                    </div>
+                                    <div class="recipe-metric">
+                                        <span class="metric-label">Risk Level:</span>
+                                        <span class="metric-value high">High</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Environment Tab -->
+                <div class="tab-content" id="environmentTab" style="display: none;">
+                    <div class="environment-scenarios">
+                        <h3>🌍 Environmental Conditions</h3>
+                        <div class="environment-grid">
+                            <div class="env-group">
+                                <h4>Cleanroom Conditions</h4>
+                                <div class="env-item">
+                                    <label>Temperature (°C)</label>
+                                    <input type="number" value="22" min="20" max="25" step="0.1">
+                                </div>
+                                <div class="env-item">
+                                    <label>Humidity (%)</label>
+                                    <input type="number" value="45" min="40" max="50" step="1">
+                                </div>
+                                <div class="env-item">
+                                    <label>Particle Count (per m³)</label>
+                                    <input type="number" value="100" min="50" max="500" step="10">
+                                </div>
+                            </div>
+
+                            <div class="env-group">
+                                <h4>Utility Systems</h4>
+                                <div class="env-item">
+                                    <label>Power Stability (%)</label>
+                                    <input type="number" value="99.9" min="95" max="100" step="0.1">
+                                </div>
+                                <div class="env-item">
+                                    <label>Gas Purity (9s)</label>
+                                    <input type="number" value="5" min="3" max="6" step="1">
+                                </div>
+                                <div class="env-item">
+                                    <label>Vibration Level (μm)</label>
+                                    <input type="number" value="0.1" min="0.05" max="0.5" step="0.01">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Simulation Results -->
+        <section class="results-section">
+            <div class="results-container">
+                <div class="results-header">
+                    <h2>📊 Simulation Results</h2>
+                    <div class="results-status">
+                        <span class="status-indicator" id="simulationStatus">Ready</span>
+                        <span class="confidence-score" id="confidenceScore">Confidence: --</span>
+                    </div>
+                </div>
+
+                <div class="results-grid">
+                    <!-- Yield Prediction -->
+                    <div class="result-card">
+                        <div class="card-header">
+                            <h3>🎯 Yield Prediction</h3>
+                            <div class="prediction-change" id="yieldChange">--</div>
+                        </div>
+                        <div class="prediction-chart">
+                            <canvas id="yieldChart"></canvas>
+                        </div>
+                        <div class="prediction-details">
+                            <div class="detail-item">
+                                <span class="detail-label">Current:</span>
+                                <span class="detail-value" id="currentYield">94.2%</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Predicted:</span>
+                                <span class="detail-value" id="predictedYield">--</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Confidence:</span>
+                                <span class="detail-value" id="yieldConfidence">--</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Throughput Impact -->
+                    <div class="result-card">
+                        <div class="card-header">
+                            <h3>⚡ Throughput Impact</h3>
+                            <div class="prediction-change" id="throughputChange">--</div>
+                        </div>
+                        <div class="throughput-metrics">
+                            <div class="metric-item">
+                                <span class="metric-icon">🏭</span>
+                                <div class="metric-content">
+                                    <span class="metric-label">Wafers per Hour</span>
+                                    <span class="metric-value" id="wphValue">85</span>
+                                </div>
+                            </div>
+                            <div class="metric-item">
+                                <span class="metric-icon">⏱️</span>
+                                <div class="metric-content">
+                                    <span class="metric-label">Cycle Time</span>
+                                    <span class="metric-value" id="cycleTimeValue">42 min</span>
+                                </div>
+                            </div>
+                            <div class="metric-item">
+                                <span class="metric-icon">📈</span>
+                                <div class="metric-content">
+                                    <span class="metric-label">OEE</span>
+                                    <span class="metric-value" id="oeeValue">87.5%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Cost Analysis -->
+                    <div class="result-card">
+                        <div class="card-header">
+                            <h3>💰 Cost Analysis</h3>
+                            <div class="prediction-change" id="costChange">--</div>
+                        </div>
+                        <div class="cost-breakdown">
+                            <div class="cost-item">
+                                <span class="cost-label">Material Cost:</span>
+                                <span class="cost-value" id="materialCost">$1,250</span>
+                            </div>
+                            <div class="cost-item">
+                                <span class="cost-label">Energy Cost:</span>
+                                <span class="cost-value" id="energyCost">$320</span>
+                            </div>
+                            <div class="cost-item">
+                                <span class="cost-label">Labor Cost:</span>
+                                <span class="cost-value" id="laborCost">$180</span>
+                            </div>
+                            <div class="cost-item total">
+                                <span class="cost-label">Total per Lot:</span>
+                                <span class="cost-value" id="totalCost">$1,750</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Risk Assessment -->
+                    <div class="result-card">
+                        <div class="card-header">
+                            <h3>⚠️ Risk Assessment</h3>
+                            <div class="risk-level" id="riskLevel">Low</div>
+                        </div>
+                        <div class="risk-factors">
+                            <div class="risk-item low">
+                                <span class="risk-icon">🟢</span>
+                                <span class="risk-text">Equipment stability: Low risk</span>
+                            </div>
+                            <div class="risk-item medium">
+                                <span class="risk-icon">🟡</span>
+                                <span class="risk-text">Parameter deviation: Medium risk</span>
+                            </div>
+                            <div class="risk-item low">
+                                <span class="risk-icon">🟢</span>
+                                <span class="risk-text">Process window: Low risk</span>
+                            </div>
+                            <div class="risk-item low">
+                                <span class="risk-icon">🟢</span>
+                                <span class="risk-text">Quality impact: Low risk</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recommendations -->
+                <div class="recommendations-panel">
+                    <h3>💡 AI Recommendations</h3>
+                    <div class="recommendation-list" id="recommendationList">
+                        <div class="recommendation-placeholder">
+                            Run a simulation to get AI-powered recommendations for process optimization
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="js/simulation.js"></script>
+</body>
+</html>
+

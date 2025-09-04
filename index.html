@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VSMC-DAP | Manus AI Ecosystem</title>
+    <link rel="stylesheet" href="css/main.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/date-fns@2.29.3/index.min.js"></script>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <h1>VSMC-DAP</h1>
+                <span class="subtitle">Manus AI Ecosystem</span>
+            </div>
+            <nav class="nav">
+                <a href="#" class="nav-link active">Dashboard</a>
+                <a href="ai-chat.html" class="nav-link">AI Assistant</a>
+                <a href="root-cause.html" class="nav-link">Root Cause Analysis</a>
+                <a href="data-lineage.html" class="nav-link">Data Lineage</a>
+                <a href="simulation.html" class="nav-link">What-If Simulation</a>
+            </nav>
+            <div class="user-info">
+                <span class="user-name">Engineer Chen</span>
+                <div class="status-indicator online"></div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- KPI Overview -->
+        <section class="kpi-section">
+            <div class="kpi-grid">
+                <div class="kpi-card">
+                    <div class="kpi-icon yield"></div>
+                    <div class="kpi-content">
+                        <h3>Overall Yield</h3>
+                        <div class="kpi-value">94.2%</div>
+                        <div class="kpi-trend positive">+2.1% vs yesterday</div>
+                    </div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-icon equipment"></div>
+                    <div class="kpi-content">
+                        <h3>Equipment Efficiency</h3>
+                        <div class="kpi-value">87.5%</div>
+                        <div class="kpi-trend negative">-1.2% vs yesterday</div>
+                    </div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-icon wafers"></div>
+                    <div class="kpi-content">
+                        <h3>Wafers Processed</h3>
+                        <div class="kpi-value">1,247</div>
+                        <div class="kpi-trend positive">+156 vs yesterday</div>
+                    </div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-icon alerts"></div>
+                    <div class="kpi-content">
+                        <h3>Active Alerts</h3>
+                        <div class="kpi-value">3</div>
+                        <div class="kpi-trend neutral">2 critical, 1 warning</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Charts Section -->
+        <section class="charts-section">
+            <div class="charts-grid">
+                <!-- Yield Trend Chart -->
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>Yield Trend Analysis</h3>
+                        <div class="chart-controls">
+                            <select class="time-selector">
+                                <option>Last 24 Hours</option>
+                                <option>Last 7 Days</option>
+                                <option>Last 30 Days</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="yieldChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Equipment Status -->
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>Equipment Status</h3>
+                        <div class="legend">
+                            <span class="legend-item running">Running</span>
+                            <span class="legend-item maintenance">Maintenance</span>
+                            <span class="legend-item idle">Idle</span>
+                        </div>
+                    </div>
+                    <div class="equipment-grid">
+                        <div class="equipment-item running">
+                            <div class="equipment-name">Stepper-01</div>
+                            <div class="equipment-status">Running</div>
+                            <div class="equipment-utilization">92%</div>
+                        </div>
+                        <div class="equipment-item running">
+                            <div class="equipment-name">Etcher-03</div>
+                            <div class="equipment-status">Running</div>
+                            <div class="equipment-utilization">88%</div>
+                        </div>
+                        <div class="equipment-item maintenance">
+                            <div class="equipment-name">CVD-02</div>
+                            <div class="equipment-status">Maintenance</div>
+                            <div class="equipment-utilization">0%</div>
+                        </div>
+                        <div class="equipment-item idle">
+                            <div class="equipment-name">Implanter-04</div>
+                            <div class="equipment-status">Idle</div>
+                            <div class="equipment-utilization">15%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Wafer Map and Real-time Data -->
+        <section class="data-section">
+            <div class="data-grid">
+                <!-- Wafer Map -->
+                <div class="data-card">
+                    <div class="card-header">
+                        <h3>Wafer Map Analysis</h3>
+                        <div class="wafer-info">
+                            <span>Lot: W2024-001</span>
+                            <span>Wafer: 15/25</span>
+                        </div>
+                    </div>
+                    <div class="wafer-map-container">
+                        <div class="wafer-map" id="waferMap"></div>
+                        <div class="wafer-legend">
+                            <div class="legend-item pass">Pass</div>
+                            <div class="legend-item fail">Fail</div>
+                            <div class="legend-item edge">Edge</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Real-time Alerts -->
+                <div class="data-card">
+                    <div class="card-header">
+                        <h3>Real-time Alerts</h3>
+                        <div class="alert-summary">
+                            <span class="critical">2 Critical</span>
+                            <span class="warning">1 Warning</span>
+                        </div>
+                    </div>
+                    <div class="alerts-container">
+                        <div class="alert-item critical">
+                            <div class="alert-icon"></div>
+                            <div class="alert-content">
+                                <div class="alert-title">Temperature Deviation</div>
+                                <div class="alert-description">CVD-02 chamber temperature exceeded threshold</div>
+                                <div class="alert-time">2 minutes ago</div>
+                            </div>
+                        </div>
+                        <div class="alert-item critical">
+                            <div class="alert-icon"></div>
+                            <div class="alert-content">
+                                <div class="alert-title">Pressure Anomaly</div>
+                                <div class="alert-description">Etcher-01 pressure reading outside normal range</div>
+                                <div class="alert-time">5 minutes ago</div>
+                            </div>
+                        </div>
+                        <div class="alert-item warning">
+                            <div class="alert-icon"></div>
+                            <div class="alert-content">
+                                <div class="alert-title">Throughput Decline</div>
+                                <div class="alert-description">Stepper-03 throughput 15% below target</div>
+                                <div class="alert-time">12 minutes ago</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- AI Insights -->
+        <section class="insights-section">
+            <div class="insights-card">
+                <div class="insights-header">
+                    <h3>AI-Powered Insights</h3>
+                    <div class="insights-status">
+                        <span class="status-dot active"></span>
+                        <span>Analysis Complete</span>
+                    </div>
+                </div>
+                <div class="insights-content">
+                    <div class="insight-item">
+                        <div class="insight-icon prediction"></div>
+                        <div class="insight-text">
+                            <strong>Yield Prediction:</strong> Based on current trends, yield is expected to reach 95.1% by end of shift. Recommend monitoring Stepper-01 parameters closely.
+                        </div>
+                    </div>
+                    <div class="insight-item">
+                        <div class="insight-icon correlation"></div>
+                        <div class="insight-text">
+                            <strong>Correlation Detected:</strong> Strong correlation found between CVD-02 temperature variance and downstream yield loss. Suggest preventive maintenance.
+                        </div>
+                    </div>
+                    <div class="insight-item">
+                        <div class="insight-icon optimization"></div>
+                        <div class="insight-text">
+                            <strong>Optimization Opportunity:</strong> Adjusting Etcher-03 recipe parameters could improve throughput by 8% with minimal yield impact.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Quick Actions Floating Button -->
+    <div class="quick-actions">
+        <button class="quick-action-btn" onclick="openAIChat()">
+            <span class="btn-icon">🤖</span>
+            <span class="btn-text">Ask AI</span>
+        </button>
+    </div>
+
+    <script src="js/main.js"></script>
+</body>
+</html>
+

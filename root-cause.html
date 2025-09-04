@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Root Cause Analysis | VSMC-DAP</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/root-cause.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <h1>VSMC-DAP</h1>
+                <span class="subtitle">Root Cause Analysis</span>
+            </div>
+            <nav class="nav">
+                <a href="index.html" class="nav-link">Dashboard</a>
+                <a href="ai-chat.html" class="nav-link">AI Assistant</a>
+                <a href="#" class="nav-link active">Root Cause Analysis</a>
+                <a href="data-lineage.html" class="nav-link">Data Lineage</a>
+                <a href="simulation.html" class="nav-link">What-If Simulation</a>
+            </nav>
+            <div class="user-info">
+                <span class="user-name">Engineer Chen</span>
+                <div class="status-indicator online"></div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="rca-main">
+        <!-- Analysis Header -->
+        <section class="analysis-header">
+            <div class="header-content">
+                <div class="analysis-info">
+                    <h1>Multi-Modal Root Cause Analysis</h1>
+                    <div class="analysis-meta">
+                        <span class="meta-item">📊 Lot: W2024-001</span>
+                        <span class="meta-item">⏰ Analysis Time: 2024-01-25 15:30</span>
+                        <span class="meta-item">🎯 Confidence: 87%</span>
+                        <span class="meta-item">🔍 Status: Complete</span>
+                    </div>
+                </div>
+                <div class="analysis-controls">
+                    <select class="lot-selector">
+                        <option value="W2024-001">Lot W2024-001</option>
+                        <option value="W2024-002">Lot W2024-002</option>
+                        <option value="W2024-003">Lot W2024-003</option>
+                    </select>
+                    <button class="control-btn primary" onclick="runAnalysis()">🔄 Re-analyze</button>
+                    <button class="control-btn" onclick="exportReport()">📄 Export Report</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Analysis Summary -->
+        <section class="summary-section">
+            <div class="summary-card">
+                <div class="summary-header">
+                    <h2>🎯 Analysis Summary</h2>
+                    <div class="confidence-badge high">87% Confidence</div>
+                </div>
+                <div class="summary-content">
+                    <div class="primary-cause">
+                        <h3>Primary Root Cause</h3>
+                        <div class="cause-item">
+                            <div class="cause-icon critical">🌡️</div>
+                            <div class="cause-details">
+                                <div class="cause-title">CVD-02 Temperature Instability</div>
+                                <div class="cause-description">Temperature spike of +15°C at 10:25 AM caused film stress variation leading to downstream yield loss</div>
+                                <div class="cause-impact">Impact: 5.8% yield loss • Affected wafers: 15/25</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="secondary-causes">
+                        <h3>Contributing Factors</h3>
+                        <div class="cause-item">
+                            <div class="cause-icon warning">🎯</div>
+                            <div class="cause-details">
+                                <div class="cause-title">Stepper-01 Focus Drift</div>
+                                <div class="cause-description">Focus drift of 25nm amplified the impact of film stress variation</div>
+                            </div>
+                        </div>
+                        <div class="cause-item">
+                            <div class="cause-icon info">⚙️</div>
+                            <div class="cause-details">
+                                <div class="cause-title">Recipe Parameter Interaction</div>
+                                <div class="cause-description">Suboptimal compensation for edge die exposure</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Multi-Modal Analysis -->
+        <section class="multimodal-section">
+            <div class="analysis-grid">
+                <!-- Wafer Map Analysis -->
+                <div class="analysis-card">
+                    <div class="card-header">
+                        <h3>🗺️ Wafer Map Analysis</h3>
+                        <div class="card-controls">
+                            <select class="wafer-selector">
+                                <option>Wafer 15/25</option>
+                                <option>Wafer 14/25</option>
+                                <option>Wafer 16/25</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="wafer-analysis-container">
+                        <div class="wafer-map-large" id="waferMapLarge"></div>
+                        <div class="wafer-insights">
+                            <div class="insight-item">
+                                <span class="insight-label">Pattern Type:</span>
+                                <span class="insight-value">Radial Gradient</span>
+                            </div>
+                            <div class="insight-item">
+                                <span class="insight-label">Defect Density:</span>
+                                <span class="insight-value">5.8% (145/2500 dies)</span>
+                            </div>
+                            <div class="insight-item">
+                                <span class="insight-label">Spatial Correlation:</span>
+                                <span class="insight-value">Strong clustering in Q2</span>
+                            </div>
+                            <div class="insight-item">
+                                <span class="insight-label">Edge Exclusion:</span>
+                                <span class="insight-value">78% of failures</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Statistical Analysis -->
+                <div class="analysis-card">
+                    <div class="card-header">
+                        <h3>📊 Statistical Analysis</h3>
+                        <div class="card-controls">
+                            <button class="view-btn active" onclick="showChart('pareto')">Pareto</button>
+                            <button class="view-btn" onclick="showChart('trend')">Trend</button>
+                            <button class="view-btn" onclick="showChart('distribution')">Distribution</button>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="statisticalChart"></canvas>
+                    </div>
+                    <div class="statistical-insights">
+                        <div class="stat-item">
+                            <span class="stat-icon">📈</span>
+                            <span class="stat-text">Defect rate increased 3.2x after 10:25 AM</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-icon">🎯</span>
+                            <span class="stat-text">95% of defects within 2mm of wafer edge</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-icon">📊</span>
+                            <span class="stat-text">Binomial test p-value < 0.001 (highly significant)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Causal Inference -->
+                <div class="analysis-card full-width">
+                    <div class="card-header">
+                        <h3>🔗 Causal Inference Network</h3>
+                        <div class="card-controls">
+                            <button class="view-btn active" onclick="showCausalView('network')">Network</button>
+                            <button class="view-btn" onclick="showCausalView('timeline')">Timeline</button>
+                            <button class="view-btn" onclick="showCausalView('correlation')">Correlation</button>
+                        </div>
+                    </div>
+                    <div class="causal-container">
+                        <div class="causal-network" id="causalNetwork"></div>
+                        <div class="causal-legend">
+                            <div class="legend-section">
+                                <h4>Node Types</h4>
+                                <div class="legend-item">
+                                    <div class="legend-node equipment"></div>
+                                    <span>Equipment</span>
+                                </div>
+                                <div class="legend-item">
+                                    <div class="legend-node parameter"></div>
+                                    <span>Parameter</span>
+                                </div>
+                                <div class="legend-item">
+                                    <div class="legend-node outcome"></div>
+                                    <span>Outcome</span>
+                                </div>
+                            </div>
+                            <div class="legend-section">
+                                <h4>Causal Strength</h4>
+                                <div class="legend-item">
+                                    <div class="legend-edge strong"></div>
+                                    <span>Strong (>0.7)</span>
+                                </div>
+                                <div class="legend-item">
+                                    <div class="legend-edge medium"></div>
+                                    <span>Medium (0.4-0.7)</span>
+                                </div>
+                                <div class="legend-item">
+                                    <div class="legend-edge weak"></div>
+                                    <span>Weak (<0.4)</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Evidence Timeline -->
+                <div class="analysis-card">
+                    <div class="card-header">
+                        <h3>⏰ Evidence Timeline</h3>
+                        <div class="timeline-controls">
+                            <button class="time-btn" onclick="setTimeRange('1h')">1H</button>
+                            <button class="time-btn active" onclick="setTimeRange('4h')">4H</button>
+                            <button class="time-btn" onclick="setTimeRange('8h')">8H</button>
+                        </div>
+                    </div>
+                    <div class="timeline-container">
+                        <div class="timeline" id="evidenceTimeline">
+                            <div class="timeline-event critical" style="left: 25%;">
+                                <div class="event-marker"></div>
+                                <div class="event-tooltip">
+                                    <div class="event-time">10:25 AM</div>
+                                    <div class="event-title">CVD-02 Temperature Spike</div>
+                                    <div class="event-details">+15°C above setpoint</div>
+                                </div>
+                            </div>
+                            <div class="timeline-event warning" style="left: 35%;">
+                                <div class="event-marker"></div>
+                                <div class="event-tooltip">
+                                    <div class="event-time">10:45 AM</div>
+                                    <div class="event-title">Film Stress Detected</div>
+                                    <div class="event-details">Metrology alert triggered</div>
+                                </div>
+                            </div>
+                            <div class="timeline-event info" style="left: 50%;">
+                                <div class="event-marker"></div>
+                                <div class="event-tooltip">
+                                    <div class="event-time">11:15 AM</div>
+                                    <div class="event-title">Stepper Focus Drift</div>
+                                    <div class="event-details">25nm deviation detected</div>
+                                </div>
+                            </div>
+                            <div class="timeline-event critical" style="left: 70%;">
+                                <div class="event-marker"></div>
+                                <div class="event-tooltip">
+                                    <div class="event-time">12:30 PM</div>
+                                    <div class="event-title">Yield Loss Confirmed</div>
+                                    <div class="event-details">5.8% below target</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="timeline-axis">
+                            <span>09:00</span>
+                            <span>10:00</span>
+                            <span>11:00</span>
+                            <span>12:00</span>
+                            <span>13:00</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Correlation Matrix -->
+                <div class="analysis-card">
+                    <div class="card-header">
+                        <h3>📈 Parameter Correlation</h3>
+                        <div class="correlation-controls">
+                            <select class="parameter-selector">
+                                <option>All Parameters</option>
+                                <option>Temperature</option>
+                                <option>Pressure</option>
+                                <option>Flow Rate</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="correlation-matrix" id="correlationMatrix">
+                        <!-- Correlation matrix will be generated by JavaScript -->
+                    </div>
+                    <div class="correlation-insights">
+                        <div class="correlation-item strong-negative">
+                            <span class="correlation-value">-0.78</span>
+                            <span class="correlation-desc">CVD Temp ↔ Yield</span>
+                        </div>
+                        <div class="correlation-item strong-positive">
+                            <span class="correlation-value">+0.82</span>
+                            <span class="correlation-desc">Pressure ↔ Uniformity</span>
+                        </div>
+                        <div class="correlation-item medium-negative">
+                            <span class="correlation-value">-0.65</span>
+                            <span class="correlation-desc">Focus ↔ CD Control</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Recommendations -->
+        <section class="recommendations-section">
+            <div class="recommendations-card">
+                <div class="recommendations-header">
+                    <h2>💡 AI-Generated Recommendations</h2>
+                    <div class="priority-filter">
+                        <button class="priority-btn active" onclick="filterPriority('all')">All</button>
+                        <button class="priority-btn" onclick="filterPriority('critical')">Critical</button>
+                        <button class="priority-btn" onclick="filterPriority('high')">High</button>
+                        <button class="priority-btn" onclick="filterPriority('medium')">Medium</button>
+                    </div>
+                </div>
+                <div class="recommendations-grid">
+                    <div class="recommendation-item critical">
+                        <div class="rec-priority">Critical</div>
+                        <div class="rec-content">
+                            <h3>🚨 Immediate CVD-02 Calibration</h3>
+                            <p>Perform immediate temperature calibration on CVD-02 chamber. Temperature controller drift detected with 15°C deviation from setpoint.</p>
+                            <div class="rec-details">
+                                <span class="rec-impact">Impact: Prevent 5-8% yield loss</span>
+                                <span class="rec-effort">Effort: 2 hours</span>
+                                <span class="rec-cost">Cost: $500</span>
+                            </div>
+                            <div class="rec-actions">
+                                <button class="action-btn primary">Schedule Maintenance</button>
+                                <button class="action-btn">Create Work Order</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="recommendation-item high">
+                        <div class="rec-priority">High</div>
+                        <div class="rec-content">
+                            <h3>🎯 Stepper Focus Optimization</h3>
+                            <p>Implement enhanced autofocus algorithm to compensate for wafer bow caused by film stress. Current 25nm drift exceeds specification.</p>
+                            <div class="rec-details">
+                                <span class="rec-impact">Impact: Improve CD control by 40%</span>
+                                <span class="rec-effort">Effort: 1 day</span>
+                                <span class="rec-cost">Cost: $2,000</span>
+                            </div>
+                            <div class="rec-actions">
+                                <button class="action-btn primary">Implement Solution</button>
+                                <button class="action-btn">Test on Dummy Lot</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="recommendation-item medium">
+                        <div class="rec-priority">Medium</div>
+                        <div class="rec-content">
+                            <h3>⚙️ Recipe Parameter Optimization</h3>
+                            <p>Optimize edge compensation parameters in lithography recipe to reduce edge die failure rate from 78% to target 20%.</p>
+                            <div class="rec-details">
+                                <span class="rec-impact">Impact: Recover 2-3% yield</span>
+                                <span class="rec-effort">Effort: 4 hours</span>
+                                <span class="rec-cost">Cost: $200</span>
+                            </div>
+                            <div class="rec-actions">
+                                <button class="action-btn primary">Optimize Recipe</button>
+                                <button class="action-btn">Run Simulation</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="recommendation-item medium">
+                        <div class="rec-priority">Medium</div>
+                        <div class="rec-content">
+                            <h3>📊 Enhanced Monitoring</h3>
+                            <p>Implement real-time correlation monitoring between CVD temperature and downstream yield to enable predictive intervention.</p>
+                            <div class="rec-details">
+                                <span class="rec-impact">Impact: Prevent future incidents</span>
+                                <span class="rec-effort">Effort: 1 week</span>
+                                <span class="rec-cost">Cost: $5,000</span>
+                            </div>
+                            <div class="rec-actions">
+                                <button class="action-btn primary">Deploy Monitoring</button>
+                                <button class="action-btn">Configure Alerts</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="js/root-cause.js"></script>
+</body>
+</html>
+

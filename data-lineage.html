@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Lineage | VSMC-DAP</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/data-lineage.css">
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <h1>VSMC-DAP</h1>
+                <span class="subtitle">Data Lineage & Unified Model</span>
+            </div>
+            <nav class="nav">
+                <a href="index.html" class="nav-link">Dashboard</a>
+                <a href="ai-chat.html" class="nav-link">AI Assistant</a>
+                <a href="root-cause.html" class="nav-link">Root Cause Analysis</a>
+                <a href="#" class="nav-link active">Data Lineage</a>
+                <a href="simulation.html" class="nav-link">What-If Simulation</a>
+            </nav>
+            <div class="user-info">
+                <span class="user-name">Engineer Chen</span>
+                <div class="status-indicator online"></div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="lineage-main">
+        <!-- Control Panel -->
+        <section class="control-panel">
+            <div class="panel-content">
+                <div class="search-section">
+                    <h3>🔍 Data Lineage Explorer</h3>
+                    <div class="search-controls">
+                        <input type="text" class="search-input" placeholder="Search by Wafer ID, Lot, Equipment, or Parameter..." value="W2024-001-15">
+                        <button class="search-btn" onclick="searchLineage()">Search</button>
+                        <button class="trace-btn" onclick="traceLineage()">📊 Trace Lineage</button>
+                    </div>
+                </div>
+                <div class="filter-section">
+                    <div class="filter-group">
+                        <label>Data Source:</label>
+                        <select class="filter-select" onchange="filterBySource()">
+                            <option value="all">All Sources</option>
+                            <option value="mes">MES Database</option>
+                            <option value="wat">WAT System</option>
+                            <option value="fdc">FDC Sensors</option>
+                            <option value="metrology">Metrology Tools</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label>Time Range:</label>
+                        <select class="filter-select" onchange="filterByTime()">
+                            <option value="24h">Last 24 Hours</option>
+                            <option value="7d">Last 7 Days</option>
+                            <option value="30d">Last 30 Days</option>
+                            <option value="custom">Custom Range</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label>View Mode:</label>
+                        <select class="filter-select" onchange="changeViewMode()">
+                            <option value="lineage">Data Lineage</option>
+                            <option value="ontology">Unified Ontology</option>
+                            <option value="quality">Data Quality</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Visualization Area -->
+        <section class="visualization-section">
+            <div class="viz-container">
+                <!-- Data Lineage Graph -->
+                <div class="lineage-graph" id="lineageGraph">
+                    <div class="graph-header">
+                        <h3>📊 Data Lineage Flow</h3>
+                        <div class="graph-controls">
+                            <button class="control-btn" onclick="resetZoom()">🔍 Reset Zoom</button>
+                            <button class="control-btn" onclick="exportGraph()">📄 Export</button>
+                            <button class="control-btn" onclick="toggleLayout()">🔄 Layout</button>
+                        </div>
+                    </div>
+                    <div class="graph-content" id="graphContent"></div>
+                </div>
+
+                <!-- Details Panel -->
+                <div class="details-panel" id="detailsPanel">
+                    <div class="panel-header">
+                        <h3>📋 Selected Node Details</h3>
+                        <button class="close-btn" onclick="closeDetails()">✕</button>
+                    </div>
+                    <div class="panel-content" id="panelContent">
+                        <div class="no-selection">
+                            <div class="no-selection-icon">🎯</div>
+                            <p>Click on any node in the lineage graph to view detailed information</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Unified Data Model -->
+        <section class="model-section">
+            <div class="model-container">
+                <div class="model-header">
+                    <h2>🏗️ Unified Semiconductor Data Model</h2>
+                    <div class="model-controls">
+                        <button class="view-btn active" onclick="showModelView('schema')">Schema</button>
+                        <button class="view-btn" onclick="showModelView('ontology')">Ontology</button>
+                        <button class="view-btn" onclick="showModelView('relationships')">Relationships</button>
+                    </div>
+                </div>
+                
+                <div class="model-content">
+                    <!-- Schema View -->
+                    <div class="schema-view" id="schemaView">
+                        <div class="schema-grid">
+                            <div class="schema-entity core">
+                                <div class="entity-header">
+                                    <h4>🎯 Core Entities</h4>
+                                </div>
+                                <div class="entity-items">
+                                    <div class="entity-item">
+                                        <span class="entity-icon">🏭</span>
+                                        <span class="entity-name">Fab</span>
+                                    </div>
+                                    <div class="entity-item">
+                                        <span class="entity-icon">🔧</span>
+                                        <span class="entity-name">Equipment</span>
+                                    </div>
+                                    <div class="entity-item">
+                                        <span class="entity-icon">📦</span>
+                                        <span class="entity-name">Lot</span>
+                                    </div>
+                                    <div class="entity-item">
+                                        <span class="entity-icon">💿</span>
+                                        <span class="entity-name">Wafer</span>
+                                    </div>
+                                    <div class="entity-item">
+                                        <span class="entity-icon">🔲</span>
+                                        <span class="entity-name">Die</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="schema-entity process">
+                                <div class="entity-header">
+                                    <h4>⚙️ Process Entities</h4>
+                                </div>
+                                <div class="entity-items">
+                                    <div class="entity-item">
+                                        <span class="entity-icon">📋</span>
+                                        <span class="entity-name">Recipe</span>
+                                    </div>
+                                    <div class="entity-item">
+                                        <span class="entity-icon">🔄</span>
+                                        <span class="entity-name">Process Step</span>
+                                    </div>
+                                    <div class="entity-item">
+                                        <span class="entity-icon">📊</span>
+                                        <span class="entity-name">Parameter</span>
+                                    </div>
+                                    <div class="entity-item">
+                                        <span class="entity-icon">📈</span>
+                                        <span class="entity-name">Measurement</span>
+                                    </div>
+                                    <div class="entity-item">
+                                        <span class="entity-icon">⚠️</span>
+                                        <span class="entity-name">Event</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="schema-entity quality">
+                                <div class="entity-header">
+                                    <h4>🎯 Quality Entities</h4>
+                                </div>
+                                <div class="entity-items">
+                                    <div class="entity-item">
+                                        <span class="entity-icon">🧪</span>
+                                        <span class="entity-name">Test</span>
+                                    </div>
+                                    <div class="entity-item">
+                                        <span class="entity-icon">📏</span>
+                                        <span class="entity-name">Metrology</span>
+                                    </div>
+                                    <div class="entity-item">
+                                        <span class="entity-icon">🚫</span>
+                                        <span class="entity-name">Defect</span>
+                                    </div>
+                                    <div class="entity-item">
+                                        <span class="entity-icon">📊</span>
+                                        <span class="entity-name">Yield</span>
+                                    </div>
+                                    <div class="entity-item">
+                                        <span class="entity-icon">🔍</span>
+                                        <span class="entity-name">Inspection</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="schema-entity temporal">
+                                <div class="entity-header">
+                                    <h4>⏰ Temporal Entities</h4>
+                                </div>
+                                <div class="entity-items">
+                                    <div class="entity-item">
+                                        <span class="entity-icon">📅</span>
+                                        <span class="entity-name">Time Period</span>
+                                    </div>
+                                    <div class="entity-item">
+                                        <span class="entity-icon">⏱️</span>
+                                        <span class="entity-name">Timestamp</span>
+                                    </div>
+                                    <div class="entity-item">
+                                        <span class="entity-icon">📈</span>
+                                        <span class="entity-name">Trend</span>
+                                    </div>
+                                    <div class="entity-item">
+                                        <span class="entity-icon">🔄</span>
+                                        <span class="entity-name">Cycle</span>
+                                    </div>
+                                    <div class="entity-item">
+                                        <span class="entity-icon">📊</span>
+                                        <span class="entity-name">History</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Ontology View -->
+                    <div class="ontology-view" id="ontologyView" style="display: none;">
+                        <div class="ontology-hierarchy">
+                            <div class="hierarchy-level">
+                                <h4>🏭 Manufacturing Domain</h4>
+                                <div class="concept-tree">
+                                    <div class="concept-node">
+                                        <span class="concept-icon">🏭</span>
+                                        <span class="concept-name">Semiconductor Manufacturing</span>
+                                        <div class="concept-children">
+                                            <div class="concept-child">
+                                                <span class="concept-icon">🔧</span>
+                                                <span class="concept-name">Front-End Process</span>
+                                            </div>
+                                            <div class="concept-child">
+                                                <span class="concept-icon">📦</span>
+                                                <span class="concept-name">Back-End Process</span>
+                                            </div>
+                                            <div class="concept-child">
+                                                <span class="concept-icon">🧪</span>
+                                                <span class="concept-name">Test & Measurement</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Relationships View -->
+                    <div class="relationships-view" id="relationshipsView" style="display: none;">
+                        <div class="relationship-matrix">
+                            <h4>🔗 Entity Relationships</h4>
+                            <div class="matrix-grid">
+                                <div class="relationship-item">
+                                    <span class="rel-source">Lot</span>
+                                    <span class="rel-type">contains</span>
+                                    <span class="rel-target">Wafer</span>
+                                    <span class="rel-cardinality">1:N</span>
+                                </div>
+                                <div class="relationship-item">
+                                    <span class="rel-source">Wafer</span>
+                                    <span class="rel-type">contains</span>
+                                    <span class="rel-target">Die</span>
+                                    <span class="rel-cardinality">1:N</span>
+                                </div>
+                                <div class="relationship-item">
+                                    <span class="rel-source">Equipment</span>
+                                    <span class="rel-type">processes</span>
+                                    <span class="rel-target">Wafer</span>
+                                    <span class="rel-cardinality">N:M</span>
+                                </div>
+                                <div class="relationship-item">
+                                    <span class="rel-source">Recipe</span>
+                                    <span class="rel-type">defines</span>
+                                    <span class="rel-target">Process Step</span>
+                                    <span class="rel-cardinality">1:N</span>
+                                </div>
+                                <div class="relationship-item">
+                                    <span class="rel-source">Test</span>
+                                    <span class="rel-type">measures</span>
+                                    <span class="rel-target">Die</span>
+                                    <span class="rel-cardinality">N:M</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Data Quality Dashboard -->
+        <section class="quality-section">
+            <div class="quality-container">
+                <div class="quality-header">
+                    <h2>📊 Data Quality Dashboard</h2>
+                    <div class="quality-summary">
+                        <div class="quality-metric">
+                            <span class="metric-value">99.8%</span>
+                            <span class="metric-label">Completeness</span>
+                        </div>
+                        <div class="quality-metric">
+                            <span class="metric-value">99.7%</span>
+                            <span class="metric-label">Accuracy</span>
+                        </div>
+                        <div class="quality-metric">
+                            <span class="metric-value">100%</span>
+                            <span class="metric-label">Consistency</span>
+                        </div>
+                        <div class="quality-metric">
+                            <span class="metric-value">98.9%</span>
+                            <span class="metric-label">Timeliness</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="quality-grid">
+                    <div class="quality-card">
+                        <h3>📈 Data Volume Trends</h3>
+                        <div class="volume-stats">
+                            <div class="stat-item">
+                                <span class="stat-label">Daily Ingestion:</span>
+                                <span class="stat-value">47.2 GB</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Records Processed:</span>
+                                <span class="stat-value">2.1M</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Real-time Streams:</span>
+                                <span class="stat-value">156</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="quality-card">
+                        <h3>🔍 Data Validation</h3>
+                        <div class="validation-results">
+                            <div class="validation-item pass">
+                                <span class="validation-icon">✅</span>
+                                <span class="validation-text">Schema Validation: PASS</span>
+                            </div>
+                            <div class="validation-item pass">
+                                <span class="validation-icon">✅</span>
+                                <span class="validation-text">Range Validation: PASS</span>
+                            </div>
+                            <div class="validation-item warning">
+                                <span class="validation-icon">⚠️</span>
+                                <span class="validation-text">Null Values: 0.2% detected</span>
+                            </div>
+                            <div class="validation-item pass">
+                                <span class="validation-icon">✅</span>
+                                <span class="validation-text">Duplicate Check: PASS</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="quality-card">
+                        <h3>⏱️ Data Freshness</h3>
+                        <div class="freshness-indicators">
+                            <div class="freshness-item">
+                                <span class="freshness-source">MES Data</span>
+                                <span class="freshness-status fresh">< 1 min</span>
+                            </div>
+                            <div class="freshness-item">
+                                <span class="freshness-source">WAT Results</span>
+                                <span class="freshness-status fresh">< 2 min</span>
+                            </div>
+                            <div class="freshness-item">
+                                <span class="freshness-source">FDC Sensors</span>
+                                <span class="freshness-status fresh">Real-time</span>
+                            </div>
+                            <div class="freshness-item">
+                                <span class="freshness-source">Metrology</span>
+                                <span class="freshness-status stale">15 min</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="quality-card">
+                        <h3>🔗 Data Lineage Health</h3>
+                        <div class="lineage-health">
+                            <div class="health-metric">
+                                <span class="health-label">Traced Connections:</span>
+                                <span class="health-value">98.7%</span>
+                            </div>
+                            <div class="health-metric">
+                                <span class="health-label">Broken Links:</span>
+                                <span class="health-value">0.3%</span>
+                            </div>
+                            <div class="health-metric">
+                                <span class="health-label">Audit Coverage:</span>
+                                <span class="health-value">100%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="js/data-lineage.js"></script>
+</body>
+</html>
+
